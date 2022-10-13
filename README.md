@@ -1,2 +1,2 @@
-# VoterAnalysis
-Streamlit App to Visualise Various Aspects of the Kenyan 2022 Elections
+# elections-analysis
+Analysis of the Kenyan Elections 2022 using Streamlit

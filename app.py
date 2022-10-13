@@ -1,12 +1,9 @@
 # import required packages
-from logging import exception
-import os
 import numpy as np
 import pandas as pd
 import altair as alt
 import streamlit as st
 import plotly.express as px
-import matplotlib.pyplot as plt
 
 # Page setting
 st.set_page_config(layout="wide", page_title="Elections 2022 Analysis", page_icon="🗳️")
@@ -22,7 +19,7 @@ st.markdown(
 )
 
 # Select Data to view: National, County/Diaspora
-st.sidebar.image("data/LibranTechie.png", width=300)
+st.sidebar.image("data/motivate.png", width=300)
 st.sidebar.title("Select the type of data you want to retrieve")
 st.sidebar.subheader("Instructions:")
 st.sidebar.markdown(
@@ -188,10 +185,10 @@ def visualise_county_data():
     st.markdown(
         """
     ## County Results as Declared by the IEBC
-    ### Use the dropdown list to select the county you want to view.
+    ## Use the dropdown list to select the county you want to view.
     """
     )
-    county_name = st.selectbox("Select the county you want to view", county_names)
+    county_name = st.selectbox("Select County:", county_names)
     county_presidential_data_df = calculate_county_vote(county_name)
     county_turn_out = calculate_county_voter_data(county_name).round(2)
     fig = px.bar(
@@ -204,7 +201,7 @@ def visualise_county_data():
 
 
 def visualise_top_turnout():
-    top_turn_out_def = list_top_turnout()
+    top_turn_out_def = list_top_turnout().reset_index(drop=True)
     st.markdown(
         """
     - William Ruto won in 6 of the top 10 counties with the highest turnout.
@@ -215,8 +212,10 @@ def visualise_top_turnout():
 
 
 def visualise_bottom_turnout():
-    top_turn_out_def = list_top_turnout().sort_values(
-        by="Percentage Turnout", ascending=True
+    top_turn_out_def = (
+        list_top_turnout()
+        .sort_values(by="Percentage Turnout", ascending=True)
+        .reset_index(drop=True)
     )
     st.markdown(
         """
@@ -228,9 +227,14 @@ def visualise_bottom_turnout():
 
 
 def visualise_correlation():
+    raila, ruto = calculate_mean_turnout()
+    raila_average = round(raila, 2)
+    ruto_average = round(ruto, 2)
     st.markdown(
         """
-    ## Correlation between Turnout and Winner
+    ## Correlation between Turnout per County and Winner of the County
+    - Although Raila won in more counties than Ruto, the average turnout in counties won by Raila was lower than the average turnout in counties won by Ruto. (63.04% vs 70.49%)
+    - The dotted lines represents the average turnout for counties won by Raila (Blue) vs Ruto (Red).
     """
     )
     correlation_df = load_data()
@@ -252,46 +256,60 @@ def visualise_correlation():
         hover_name="County Name",
         size_max=60,
     )
+    fig.add_shape(
+        type="line",
+        x0=0,
+        y0=raila_average,
+        x1=47,
+        y1=raila_average,
+        line=dict(color="Blue", width=2, dash="dash"),
+    )
+    fig.add_shape(
+        type="line",
+        x0=0,
+        y0=ruto_average,
+        x1=47,
+        y1=ruto_average,
+        line=dict(color="Red", width=2, dash="dash"),
+    )
     fig.update_layout()
     st.plotly_chart(fig, use_container_width=True)
 
 
-try:
-    if selection == "National":
-        visualise_national_data()
-        raila, ruto = calculate_mean_turnout()
-        delta_raila_ruto = ruto - raila
-        st.markdown(
-            """
-        # Analysis of Voter Turnout """
-        )
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            st.metric("Average % Turnout - Raila won Counties", value=raila)
-        with c2:
-            st.metric("Average % Turnout - Ruto won Counties", value=ruto)
-        with c3:
-            st.metric("Difference", value=raila - ruto, delta=delta_raila_ruto)
-        b1, b2 = st.columns(2)
-        with b1:
-            visualise_top_turnout()
-        with b2:
-            visualise_bottom_turnout()
-        visualise_correlation()
-    else:
-        visualise_county_data()
-        raila, ruto = calculate_mean_turnout()
-        st.markdown(
-            """
-        # Analysis of Voter Turnout
+def visualiase_turnout_average():
+    raila, ruto = calculate_mean_turnout()
+    raila = round(raila, 2)
+    ruto = round(ruto, 2)
+    delta_raila_ruto = round((ruto - raila), 2)
+    st.markdown(
         """
-        )
-        b1, b2 = st.columns(2)
-        with b1:
-            visualise_top_turnout()
-        with b2:
-            visualise_bottom_turnout()
-        visualise_correlation()
+    # Analysis of Voter Turnout """
+    )
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.metric("Average % Turnout - Raila won Counties", value=raila)
+    with c2:
+        st.metric("Average % Turnout - Ruto won Counties", value=ruto)
+    with c3:
+        st.metric("Difference", value="", delta=delta_raila_ruto)
+    b1, b2 = st.columns(2)
+    with b1:
+        visualise_top_turnout()
+    with b2:
+        visualise_bottom_turnout()
 
-except BaseException as e:
-    st.error(e)
+
+if __name__ == "__main__":
+
+    try:
+        if selection == "National":
+            visualise_national_data()
+            visualiase_turnout_average()
+            visualise_correlation()
+        else:
+            visualise_county_data()
+            visualiase_turnout_average()
+            visualise_correlation()
+
+    except BaseException as e:
+        st.error(e)

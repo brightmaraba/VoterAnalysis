@@ -1,7 +1,6 @@
 # import required packages
 import numpy as np
 import pandas as pd
-import altair as alt
 import streamlit as st
 import plotly.express as px
 
@@ -14,7 +13,8 @@ with open("style.css") as f:
 st.header("2022 Kenya Presidential Election Analysis")
 st.markdown(
     """
-    The following analysis is based on the data released by the Independent Electoral and Boundaries Commission (IEBC) in August 2022. The data is available on the IEBC website [here](https://www.iebc.or.ke/). The key metrics are compared with the 2017 results.
+    The following analysis is based on the data released by the Independent Electoral and Boundaries Commission (IEBC) in August 2022. The data is available on the IEBC website [here](https://www.iebc.or.ke/).
+    The key metrics are compared with the 2017 results.
     """
 )
 
@@ -44,7 +44,7 @@ data_df = load_data()
 a1, a2, a3, a4 = st.columns(4)
 a1.image("data/iebc.jpg", width=200)
 a2.metric("Registered Voters", 22_120_458, +2_509_035)
-a3.metric("Total Registered Voters", 14_213_137, -833_044)
+a3.metric("Total Voter Turnout", 14_213_137, -833_044)
 a4.metric("Percentage Turnout", "66.14%", "-15.37%")
 
 

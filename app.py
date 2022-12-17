@@ -19,7 +19,7 @@ st.markdown(
 )
 
 # Select Data to view: National, County/Diaspora
-st.sidebar.image("data/motivate.png", width=300)
+st.sidebar.image("data/Libran4.png", width=300)
 st.sidebar.title("Select the type of data you want to retrieve")
 st.sidebar.subheader("Instructions:")
 st.sidebar.markdown(

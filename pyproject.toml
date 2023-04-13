@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "voteranalysis"
+version = "0.1.0"
+description = "Voter Analysis of the 2022 Kenyan Presidential Elections"
+authors = ["brightmaraba <brightkoech@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.24.2"
+pandas = "^1.5.3"
+streamlit = "^1.21.0"
+plotly = "^5.14.1"
+black = "^23.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

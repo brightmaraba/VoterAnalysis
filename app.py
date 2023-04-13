@@ -33,6 +33,8 @@ st.sidebar.markdown(
 selection = st.sidebar.selectbox(
     "Select the type of data you want to retrieve", ["National", "County/Diaspora"]
 )
+
+
 # Load data
 def load_data():
     df = pd.read_csv("data/elections_2022.csv")
@@ -300,7 +302,6 @@ def visualiase_turnout_average():
 
 
 if __name__ == "__main__":
-
     try:
         if selection == "National":
             visualise_national_data()

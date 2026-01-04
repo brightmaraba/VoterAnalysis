@@ -20,3 +20,40 @@ footer:after {
     color: tomato;
     align-items: center;
 }
+
+/* Dark sidebar styling */
+section[data-testid="stSidebar"],
+.css-1d391kg,
+.css-1lcbmhc,
+.css-1y4p8pa {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+}
+
+section[data-testid="stSidebar"]>div {
+    background-color: #1e1e1e;
+    background-image: none;
+}
+
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3,
+section[data-testid="stSidebar"] h4,
+section[data-testid="stSidebar"] h5,
+section[data-testid="stSidebar"] h6,
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] .stSelectbox label,
+section[data-testid="stSidebar"] .stMarkdown,
+section[data-testid="stSidebar"] .stMarkdown p {
+    color: #ffffff !important;
+}
+
+section[data-testid="stSidebar"] .stSelectbox>div>div {
+    background-color: #2d2d2d;
+    color: #ffffff;
+}
+
+section[data-testid="stSidebar"] img {
+    filter: brightness(1);
+}
